@@ -7,10 +7,10 @@ type Message = { role: "user" | "assistant"; content: string };
 const GREETING: Message = {
   role: "assistant",
   content:
-    "Hi lovely! ✨ I'm the Luxe & Glow assistant. Ask me about prices, treatments, opening hours or booking.",
+    "Hi! 👑 I'm the BeeLeeGeen assistant. Ask me about our kids' prices, styles or how to book.",
 };
 
-const SUGGESTIONS = ["How much are knotless braids?", "Do you do bridal makeup?", "Are you open on Saturday?"];
+const SUGGESTIONS = ["How much are knotless braids?", "Do you do adults too?", "How do I book?"];
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
@@ -63,18 +63,18 @@ export default function ChatWidget() {
       {open && (
         <div
           role="dialog"
-          aria-label="Chat with Luxe & Glow"
-          className="flex h-[min(560px,calc(100vh-7rem))] w-[min(380px,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-2xl border border-hairline bg-ivory shadow-[0_24px_70px_rgba(0,0,0,0.45)]"
+          aria-label="Chat with BeeLeeGeen"
+          className="flex h-[min(560px,calc(100vh-7rem))] w-[min(380px,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-2xl border border-hairline bg-cream shadow-[0_24px_70px_rgba(0,0,0,0.45)]"
         >
-          <div className="flex items-center gap-3 border-b border-hairline bg-brown px-5 py-4">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-champagne-light to-champagne-dark">
+          <div className="flex items-center gap-3 border-b border-hairline bg-purple px-5 py-4">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-pink to-gold">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
                 <path d="M12 2 14 9 21 11 14 13 12 20 10 13 3 11 10 9Z" />
               </svg>
             </span>
             <div className="flex-1">
-              <p className="font-display text-lg text-ivory">Luxe & Glow Assistant</p>
-              <p className="flex items-center gap-1.5 text-[11px] text-beige">
+              <p className="font-display text-lg text-white">BeeLeeGeen Assistant</p>
+              <p className="flex items-center gap-1.5 text-[11px] text-lilac">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Online · AI powered
               </p>
             </div>
@@ -82,7 +82,7 @@ export default function ChatWidget() {
               type="button"
               onClick={() => setOpen(false)}
               aria-label="Close chat"
-              className="rounded-full p-1.5 text-beige transition-colors hover:bg-white/10 hover:text-ivory"
+              className="rounded-full p-1.5 text-lilac transition-colors hover:bg-white/10 hover:text-white"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <path d="M6 6l12 12M18 6 6 18" />
@@ -96,17 +96,17 @@ export default function ChatWidget() {
                 key={i}
                 className={
                   m.role === "user"
-                    ? "ml-auto w-fit max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-br-sm bg-brown px-3.5 py-2.5 text-sm text-ivory"
-                    : "w-fit max-w-[90%] whitespace-pre-wrap rounded-2xl rounded-bl-sm bg-cream px-3.5 py-2.5 text-sm leading-relaxed text-brown"
+                    ? "ml-auto w-fit max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-br-sm bg-purple px-3.5 py-2.5 text-sm text-white"
+                    : "w-fit max-w-[90%] whitespace-pre-wrap rounded-2xl rounded-bl-sm bg-lilac px-3.5 py-2.5 text-sm leading-relaxed text-plum"
                 }
               >
                 {m.content}
               </p>
             ))}
             {sending && (
-              <p className="flex w-fit gap-1 rounded-2xl rounded-bl-sm bg-cream px-4 py-3.5" aria-label="Assistant is typing">
+              <p className="flex w-fit gap-1 rounded-2xl rounded-bl-sm bg-lilac px-4 py-3.5" aria-label="Assistant is typing">
                 {[0, 1, 2].map((d) => (
-                  <span key={d} className="pulse-soft h-1.5 w-1.5 rounded-full bg-champagne" style={{ animationDelay: `${d * 0.2}s` }} />
+                  <span key={d} className="pulse-soft h-1.5 w-1.5 rounded-full bg-pink" style={{ animationDelay: `${d * 0.2}s` }} />
                 ))}
               </p>
             )}
@@ -117,7 +117,7 @@ export default function ChatWidget() {
                     key={s}
                     type="button"
                     onClick={() => send(s)}
-                    className="rounded-full border border-champagne/50 px-3 py-1.5 text-xs text-champagne-dark transition-colors hover:bg-champagne/10"
+                    className="rounded-full border border-pink/50 px-3 py-1.5 text-xs text-pink-dark transition-colors hover:bg-pink/10"
                   >
                     {s}
                   </button>
@@ -136,13 +136,13 @@ export default function ChatWidget() {
               onChange={(e) => setInput(e.target.value)}
               maxLength={1000}
               placeholder="Type your message…"
-              className="flex-1 rounded-full border border-hairline bg-white px-4 py-2.5 text-sm text-ink outline-none placeholder:text-brown-soft/50 focus:border-champagne"
+              className="flex-1 rounded-full border border-hairline bg-white px-4 py-2.5 text-sm text-plum outline-none placeholder:text-plum-soft/50 focus:border-pink"
             />
             <button
               type="submit"
               disabled={sending || !input.trim()}
               aria-label="Send message"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brown text-ivory transition-colors hover:bg-champagne-dark disabled:opacity-50"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-purple text-white transition-colors hover:bg-pink-dark disabled:opacity-50"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M3 20.5 21 12 3 3.5 3 10l12 2-12 2z" />
@@ -157,7 +157,7 @@ export default function ChatWidget() {
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close chat" : "Ask us anything"}
         aria-expanded={open}
-        className="flex h-14 items-center gap-2 rounded-full bg-brown px-5 text-sm font-medium tracking-wide text-ivory shadow-[0_12px_30px_rgba(59,42,32,0.35)] transition-colors hover:bg-champagne-dark"
+        className="flex h-14 items-center gap-2 rounded-full bg-purple px-5 text-sm font-medium tracking-wide text-white shadow-[0_12px_30px_rgba(59,42,32,0.35)] transition-colors hover:bg-pink-dark"
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
           <path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" />

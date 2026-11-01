@@ -1,200 +1,164 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CATEGORIES, SALON, SERVICES, formatPrice, formatDuration } from "@/lib/salon";
+import Logo from "@/components/Logo";
+import WhatsAppIcon from "@/components/WhatsAppIcon";
+import { KIDS_STYLES, PHOTOS, PROFILE, SALON, fromPrice, whatsappLink } from "@/lib/salon";
 
-const PROMISES = [
-  { title: "Expert Professionals", text: "Qualified stylists, nail artists and therapists who keep up with every trend." },
-  { title: "Premium Products", text: "Salon-grade, skin-loving products chosen for lasting, healthy results." },
-  { title: "Book in Seconds", text: "Choose your service, stylist and time online — day or night." },
-];
-
-const REVIEWS = [
-  { quote: "My knotless braids were neat, light and done on time. The studio is so calm and beautiful.", name: "Palesa", service: "Knotless Braids" },
-  { quote: "Zanele did my bridal makeup and I felt like the best version of myself all day.", name: "Kgomotso", service: "Bridal Makeup" },
-  { quote: "Booking online took a minute and my gel nails lasted three weeks. I'm hooked!", name: "Refilwe", service: "Gel Overlay" },
+const WHY = [
+  { emoji: "👑", title: "Child-friendly", text: "Patient, gentle hands and a fun, welcoming space so little ones feel like royalty." },
+  { emoji: "✨", title: "Quality styling", text: "Neat partings, clean cornrows and creative designs that last." },
+  { emoji: "💜", title: "Affordable", text: "Kids' styles from just R80, with a complimentary wash." },
 ];
 
 export default function Home() {
-  const popular = SERVICES.filter((s) => s.popular);
-
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-cream">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-14 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:py-20">
-          <div className="fade-up order-2 lg:order-1">
-            <p className="eyebrow">{SALON.area}</p>
-            <h1 className="font-display mt-5 text-5xl font-medium leading-[1.05] text-brown sm:text-6xl lg:text-7xl">
-              Where Beauty <br />
-              Meets <span className="italic text-champagne-dark">Elegance</span>
+      <section className="sparkles relative overflow-hidden bg-gradient-to-br from-lilac via-blush to-cream">
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-12 lg:grid-cols-2 lg:px-10 lg:py-16">
+          <div className="fade-up text-center lg:text-left">
+            <Logo className="float mx-auto h-44 w-auto sm:h-52 lg:mx-0" />
+            <p className="eyebrow mt-6">{SALON.kind} · Lefisoane</p>
+            <h1 className="font-display mt-3 text-5xl font-semibold leading-[1.05] text-purple sm:text-6xl">
+              Luxury styling for <span className="text-pink-dark">little royals</span>
             </h1>
-            <p className="mt-6 max-w-lg text-lg leading-relaxed text-brown-soft">
-              Hair, nails, makeup and skincare in a calm, luxurious studio. Look and feel your best — book your
-              appointment online in under a minute.
+            <p className="mx-auto mt-5 max-w-lg text-lg leading-relaxed text-plum-soft lg:mx-0">
+              Plaiting, cornrows, braids and hair care for children — done with love, patience and a lot of style.
             </p>
-            <div className="mt-9 flex flex-wrap gap-4">
-              <Link href="/booking" className="btn-gold">
-                Book Now
-              </Link>
-              <Link href="/services" className="btn-outline">
-                View Prices
+            <p className="font-script mt-3 text-3xl text-pink-dark">…and for adults too!</p>
+            <div className="mt-8 flex flex-wrap justify-center gap-3 lg:justify-start">
+              <a href={whatsappLink("Hi BeeLeeGeen! I'd like to book a hairstyle.")} target="_blank" rel="noopener noreferrer" className="btn-primary">
+                <WhatsAppIcon /> Book on WhatsApp
+              </a>
+              <Link href="/gallery" className="btn-secondary">
+                See our work
               </Link>
             </div>
-            <dl className="mt-12 flex gap-10 border-t border-hairline pt-8">
-              {[
-                ["4.9★", "Client rating"],
-                ["12+", "Years of artistry"],
-                ["20+", "Treatments"],
-              ].map(([v, l]) => (
-                <div key={l}>
-                  <dt className="font-display text-3xl font-semibold text-brown">{v}</dt>
-                  <dd className="mt-1 text-xs tracking-wide text-brown-soft">{l}</dd>
-                </div>
-              ))}
-            </dl>
           </div>
 
-          <div className="relative order-1 lg:order-2">
-            <div className="relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-t-[999px] rounded-b-3xl shadow-[0_30px_80px_rgba(59,42,32,0.25)]">
-              <Image
-                src="/images/hero-portrait.jpg"
-                alt="Woman with radiant, glowing skin"
-                fill
-                priority
-                sizes="(min-width: 1024px) 28rem, 90vw"
-                className="object-cover"
-              />
-            </div>
-            <div className="absolute -bottom-4 left-2 rounded-2xl bg-ivory/95 px-5 py-4 shadow-xl backdrop-blur sm:left-8">
-              <p className="eyebrow !text-[0.6rem]">Next available</p>
-              <p className="font-display mt-1 text-xl font-semibold text-brown">Today · 14:30</p>
-            </div>
+          <div className="relative mx-auto grid w-full max-w-lg grid-cols-2 gap-4">
+            {["/images/work/14.jpg", "/images/work/35.jpg", "/images/work/13.jpg", "/images/work/12.jpg"].map((src, i) => (
+              <div
+                key={src}
+                className={`relative aspect-[4/5] overflow-hidden rounded-[2rem] border-4 border-white shadow-xl ${i % 2 ? "translate-y-8" : ""}`}
+              >
+                <Image src={src} alt={PHOTOS.find((p) => p.src === src)?.alt ?? ""} fill priority={i < 2} sizes="(min-width: 1024px) 16rem, 45vw" className="object-cover" />
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Intro */}
-      <section className="mx-auto max-w-3xl px-5 py-20 text-center lg:py-24">
-        <p className="eyebrow">Welcome</p>
-        <h2 className="font-display mt-4 text-4xl font-medium text-brown sm:text-5xl">Beauty, confidence &amp; relaxation</h2>
-        <div className="gold-rule mx-auto mt-6" />
-        <p className="mt-6 leading-relaxed text-brown-soft">
-          Whether you&apos;re preparing for a special occasion or simply treating yourself to some well-deserved self-care,
-          Luxe &amp; Glow is your destination for personalised beauty experiences — delivered by talented professionals in a
-          welcoming, luxurious space.
-        </p>
+      <section className="mx-auto max-w-3xl px-5 py-20 text-center">
+        <p className="eyebrow">Welcome to BeeLeeGeen</p>
+        <h2 className="font-display mt-3 text-4xl font-semibold text-purple sm:text-5xl">Where every child is a little royal</h2>
+        <p className="mt-6 text-lg leading-relaxed text-plum-soft">{PROFILE.overview}</p>
       </section>
 
-      {/* Service categories */}
+      {/* Kids services */}
       <section className="mx-auto max-w-7xl px-5 pb-20 lg:px-10">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {CATEGORIES.map((c) => (
-            <Link key={c.id} href={`/services#${c.id}`} className="group block">
-              <div className="relative aspect-[3/4] overflow-hidden rounded-3xl">
-                <Image
-                  src={c.image}
-                  alt={c.imageAlt}
-                  fill
-                  sizes="(min-width: 1024px) 22vw, (min-width: 640px) 45vw, 90vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-brown/80 via-brown/10 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-6">
-                  <h3 className="font-display text-2xl font-medium text-ivory">{c.title}</h3>
-                  <p className="mt-1 text-sm text-beige">{c.summary}</p>
-                </div>
+        <div className="text-center">
+          <p className="eyebrow">For little royals</p>
+          <h2 className="font-display mt-3 text-4xl font-semibold text-purple sm:text-5xl">Kiddies Styles</h2>
+        </div>
+        <div className="mt-12 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-5">
+          {KIDS_STYLES.map((s) => (
+            <Link key={s.id} href={`/services#${s.id}`} className="card group overflow-hidden">
+              <div className="relative aspect-square overflow-hidden">
+                <Image src={s.image} alt={s.name} fill sizes="(min-width: 1024px) 18vw, 45vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                <span className="absolute right-3 top-3 rounded-full bg-white/95 px-3 py-1 text-sm font-extrabold text-pink-dark shadow">
+                  from R{fromPrice(s)}
+                </span>
+              </div>
+              <div className="p-5">
+                <h3 className="font-display text-xl font-semibold text-purple">{s.name}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-plum-soft">{s.description}</p>
               </div>
             </Link>
           ))}
         </div>
+        <div className="mt-10 text-center">
+          <Link href="/services" className="btn-secondary">
+            Full price list
+          </Link>
+        </div>
       </section>
 
-      {/* Popular services */}
-      <section className="bg-cream py-20 lg:py-24">
-        <div className="mx-auto max-w-5xl px-5 lg:px-10">
-          <div className="text-center">
-            <p className="eyebrow">Client favourites</p>
-            <h2 className="font-display mt-4 text-4xl font-medium text-brown sm:text-5xl">Popular Treatments</h2>
-            <div className="gold-rule mx-auto mt-6" />
-          </div>
-          <ul className="mt-12 divide-y divide-hairline">
-            {popular.map((s) => (
-              <li key={s.id} className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-5">
-                <div>
-                  <p className="font-display text-2xl text-brown">{s.name}</p>
-                  <p className="text-sm text-brown-soft">{formatDuration(s.minutes)}</p>
-                </div>
-                <div className="flex items-center gap-5">
-                  <span className="font-display text-2xl font-semibold text-champagne-dark">{formatPrice(s)}</span>
-                  <Link href={`/booking?service=${s.id}`} className="text-xs uppercase tracking-[0.2em] text-brown underline-offset-4 hover:underline">
-                    Book
-                  </Link>
-                </div>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-10 text-center">
-            <Link href="/services" className="btn-outline">
-              Full Price List
+      {/* Adults too */}
+      <section className="bg-plum text-white">
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-16 lg:grid-cols-[1fr_1.2fr] lg:px-10">
+          <div className="text-center lg:text-left">
+            <p className="font-script text-4xl text-gold">Luxury styling</p>
+            <h2 className="font-display mt-1 text-5xl font-semibold">for Adults Too!</h2>
+            <p className="mt-5 text-lg leading-relaxed text-lilac">
+              Moms, sisters and aunties — sit back and let us do your cornrows, braided ponytails and braids with the same care we give our little clients.
+            </p>
+            <Link href="/services#adults" className="btn-primary mt-8">
+              Adult styles
             </Link>
           </div>
-        </div>
-      </section>
-
-      {/* Promises */}
-      <section className="mx-auto grid max-w-7xl items-center gap-14 px-5 py-20 lg:grid-cols-2 lg:px-10 lg:py-28">
-        <div className="relative aspect-[4/3] overflow-hidden rounded-3xl">
-          <Image src="/images/nail-technician.jpg" alt="Nail technician working on a client's nails" fill sizes="(min-width: 1024px) 45vw, 90vw" className="object-cover" />
-        </div>
-        <div>
-          <p className="eyebrow">Why Luxe &amp; Glow</p>
-          <h2 className="font-display mt-4 text-4xl font-medium text-brown sm:text-5xl">Personalised care, every visit</h2>
-          <div className="mt-10 space-y-8">
-            {PROMISES.map((p, i) => (
-              <div key={p.title} className="flex gap-5">
-                <span className="font-display text-3xl italic text-champagne">0{i + 1}</span>
-                <div>
-                  <h3 className="text-lg font-medium text-brown">{p.title}</h3>
-                  <p className="mt-1 leading-relaxed text-brown-soft">{p.text}</p>
-                </div>
+          <div className="grid grid-cols-3 gap-3">
+            {["/images/work/32.jpg", "/images/work/16.jpg", "/images/work/7.jpg"].map((src) => (
+              <div key={src} className="relative aspect-[3/4] overflow-hidden rounded-3xl">
+                <Image src={src} alt={PHOTOS.find((p) => p.src === src)?.alt ?? ""} fill sizes="(min-width: 1024px) 14rem, 30vw" className="object-cover" />
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Reviews */}
-      <section className="bg-brown py-20 text-ivory lg:py-24">
+      {/* Why parents choose us */}
+      <section className="mx-auto max-w-7xl px-5 py-20 lg:px-10">
+        <div className="text-center">
+          <p className="eyebrow">Why parents choose us</p>
+          <h2 className="font-display mt-3 text-4xl font-semibold text-purple sm:text-5xl">Happy kids, happy parents</h2>
+        </div>
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
+          {WHY.map((w) => (
+            <div key={w.title} className="card p-8 text-center">
+              <span className="text-5xl" aria-hidden="true">
+                {w.emoji}
+              </span>
+              <h3 className="font-display mt-4 text-2xl font-semibold text-purple">{w.title}</h3>
+              <p className="mt-2 leading-relaxed text-plum-soft">{w.text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Gallery preview */}
+      <section className="bg-lilac/60 py-20">
         <div className="mx-auto max-w-7xl px-5 lg:px-10">
           <div className="text-center">
-            <p className="eyebrow !text-champagne-light">Kind words</p>
-            <h2 className="font-display mt-4 text-4xl font-medium sm:text-5xl">Loved by our clients</h2>
+            <p className="eyebrow">Our work</p>
+            <h2 className="font-display mt-3 text-4xl font-semibold text-purple sm:text-5xl">Fresh from the chair</h2>
           </div>
-          <div className="mt-14 grid gap-6 md:grid-cols-3">
-            {REVIEWS.map((r) => (
-              <figure key={r.name} className="rounded-3xl border border-white/10 bg-white/5 p-8">
-                <p className="text-champagne-light" aria-label="5 stars">★★★★★</p>
-                <blockquote className="font-display mt-4 text-xl italic leading-relaxed text-beige">“{r.quote}”</blockquote>
-                <figcaption className="mt-6 text-sm">
-                  <span className="font-medium text-ivory">{r.name}</span>
-                  <span className="text-beige/60"> · {r.service}</span>
-                </figcaption>
-              </figure>
+          <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
+            {PHOTOS.slice(4, 12).map((p) => (
+              <div key={p.src} className="relative aspect-square overflow-hidden rounded-3xl">
+                <Image src={p.src} alt={p.alt} fill sizes="(min-width: 768px) 22vw, 45vw" className="object-cover" />
+              </div>
             ))}
+          </div>
+          <div className="mt-10 text-center">
+            <Link href="/gallery" className="btn-secondary">
+              View full gallery
+            </Link>
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="mx-auto max-w-3xl px-5 py-20 text-center lg:py-24">
-        <h2 className="font-display text-4xl font-medium text-brown sm:text-5xl">Ready to glow?</h2>
-        <p className="mt-5 text-brown-soft">Pick a treatment, choose your favourite stylist and secure your slot in seconds.</p>
-        <div className="mt-8 flex flex-wrap justify-center gap-4">
-          <Link href="/booking" className="btn-gold">
-            Book an Appointment
+      <section className="mx-auto max-w-3xl px-5 py-20 text-center">
+        <h2 className="font-display text-4xl font-semibold text-purple sm:text-5xl">Ready for a royal hairdo?</h2>
+        <p className="mt-4 text-lg text-plum-soft">Strictly by appointment — send us your booking request and we&apos;ll confirm your time.</p>
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <Link href="/booking" className="btn-primary">
+            Book an appointment
           </Link>
-          <Link href="/contact" className="btn-outline">
-            Contact Us
+          <Link href="/contact" className="btn-secondary">
+            Contact us
           </Link>
         </div>
       </section>

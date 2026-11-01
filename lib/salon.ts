@@ -1,139 +1,135 @@
-// Single source of truth for the demo salon's details. Edit here to rebrand the site for a real client.
+// Single source of truth for BeeLeeGeen's details. Edit here when the owner sends updates.
 
 export const SALON = {
-  name: "Luxe & Glow Beauty Studio",
-  shortName: "Luxe & Glow",
-  tagline: "Where Beauty Meets Elegance",
-  area: "Menlyn, Pretoria",
-  // Demo contact details — replace with the client's real ones.
-  phone: "+27 12 000 0000",
-  email: "hello@luxeglow-demo.co.za",
-  instagram: "https://www.instagram.com/",
-  facebook: "https://www.facebook.com/",
-  tiktok: "https://www.tiktok.com/",
-  mapQuery: "Menlyn, Pretoria",
+  name: "BeeLeeGeen",
+  shortName: "BLG",
+  kind: "Kiddies Hair Salon",
+  tagline: "Luxury Styling for Little Royals",
+  adultsLine: "Luxury styling for adults too!",
+  motto: "Your beauty is worthy of our time",
+  address: "E689B Mmotong section, Lefisoane",
+  mapQuery: "Mmotong, Lefisoane",
+  phones: [
+    { display: "063 379 7842", intl: "27633797842" },
+    { display: "079 372 1697", intl: "27793721697" },
+  ],
+  instagram: { handle: "@beeleegeen", url: "https://www.instagram.com/beeleegeen/" },
+  // TODO: replace the search links with the exact profile URLs once the owner sends them.
+  facebook: { handle: "Beeleegeen Mmamphofe", url: "https://www.facebook.com/search/top?q=Beeleegeen%20Mmamphofe" },
+  tiktok: { handle: "BLG Beeleegeen", url: "https://www.tiktok.com/search?q=BLG%20Beeleegeen" },
 };
 
-// The demo has no real WhatsApp number, so links open WhatsApp with the message ready to send to any chat.
-export function whatsappLink(message: string) {
-  return `https://wa.me/?text=${encodeURIComponent(message)}`;
+/** WhatsApp chat with the salon's main number, with the message ready to send. */
+export function whatsappLink(message: string, intl = SALON.phones[0].intl) {
+  return `https://wa.me/${intl}?text=${encodeURIComponent(message)}`;
 }
 
-export const HOURS = [
-  { days: "Monday – Friday", time: "08:00 – 18:00" },
-  { days: "Saturday", time: "08:00 – 16:00" },
-  { days: "Sunday & public holidays", time: "Closed" },
-];
+export const telLink = (intl: string) => `tel:+${intl}`;
 
-// Opening hours used by the booking calendar (0 = Sunday).
-export const OPEN_HOURS: Record<number, [number, number] | null> = {
-  0: null,
-  1: [8, 18],
-  2: [8, 18],
-  3: [8, 18],
-  4: [8, 18],
-  5: [8, 18],
-  6: [8, 16],
+// From the owner's business profile.
+export const PROFILE = {
+  overview:
+    "BeeLeeGeen is a kiddies hair salon in Lefisoane where little ones are treated like royalty. We offer children's plaiting, cornrows, braids and hair care with gentle hands and lots of patience — and the same luxury styling for moms and adults too.",
+  vision: "To become the most trusted and leading kiddies hair salon.",
+  mission: "To provide quality, affordable and child-friendly hairstyling services.",
+  goals: ["Customer satisfaction", "Growth", "Excellent service"],
 };
 
-export type CategoryId = "hair" | "nails" | "makeup" | "skin";
+export type PriceOption = { label: string; price: number };
 
-export const CATEGORIES: {
-  id: CategoryId;
-  title: string;
-  summary: string;
-  image: string;
-  imageAlt: string;
-}[] = [
+export type KidsStyle = { id: string; name: string; description: string; image: string; options: PriceOption[] };
+
+// The owner's kids price list (rand).
+export const KIDS_STYLES: KidsStyle[] = [
   {
-    id: "hair",
-    title: "Hair Styling",
-    summary: "Braids, wigs, treatments and styling.",
-    image: "/images/hair-braiding.jpg",
-    imageAlt: "Stylist braiding a client's hair",
+    id: "knotless-braids",
+    name: "Knotless Braids",
+    description: "Light, neat knotless braids that are gentle on little heads.",
+    image: "/images/work/34.jpg",
+    options: [{ label: "Short", price: 250 }, { label: "Long", price: 300 }],
   },
   {
-    id: "nails",
-    title: "Nail Treatments",
-    summary: "Gel nails, acrylics, manicures and pedicures.",
-    image: "/images/nails-client.jpg",
-    imageAlt: "Smiling client during a manicure",
+    id: "straight-back",
+    name: "Straight Back",
+    description: "Classic cornrows plaited neatly straight back.",
+    image: "/images/work/18.jpg",
+    options: [{ label: "Short", price: 150 }, { label: "Long", price: 180 }],
   },
   {
-    id: "makeup",
-    title: "Makeup Services",
-    summary: "Bridal, special occasion and everyday glam.",
-    image: "/images/makeup-artist.jpg",
-    imageAlt: "Makeup artist applying eyeliner",
+    id: "straight-up",
+    name: "Straight Up",
+    description: "Cornrows swept up into a ponytail or bun — perfect for school.",
+    image: "/images/work/12.jpg",
+    options: [{ label: "Short", price: 180 }, { label: "Long", price: 200 }],
   },
   {
-    id: "skin",
-    title: "Beauty & Skincare",
-    summary: "Facials, brows, lashes and skincare treatments.",
-    image: "/images/skincare-facial.jpg",
-    imageAlt: "Client receiving a facial serum treatment",
+    id: "tribal-braids",
+    name: "Tribal Braids",
+    description: "Cornrows paired with braids for a bold, beautiful look.",
+    image: "/images/work/13.jpg",
+    options: [{ label: "Short", price: 200 }, { label: "Long", price: 250 }],
+  },
+  {
+    id: "free-hand",
+    name: "Free-Hand",
+    description: "Creative freehand cornrow designs — lines, fishbones, pondos and funky patterns.",
+    image: "/images/work/14.jpg",
+    options: [
+      { label: "Straight line", price: 80 },
+      { label: "Funky design", price: 100 },
+      { label: "1 fishbone", price: 100 },
+      { label: "2 fishbone", price: 120 },
+      { label: "1 pondo", price: 100 },
+      { label: "2 pondo", price: 120 },
+    ],
   },
 ];
 
-export type Service = {
-  id: string;
-  category: CategoryId;
-  name: string;
-  description: string;
-  price: number;
-  priceFrom?: boolean;
-  minutes: number;
-  popular?: boolean;
-};
+export const fromPrice = (s: KidsStyle) => Math.min(...s.options.map((o) => o.price));
 
-export const SERVICES: Service[] = [
-  // Hair
-  { id: "knotless-braids", category: "hair", name: "Knotless Braids (medium)", description: "Lightweight, natural-looking braids, waist length. Hair included.", price: 650, priceFrom: true, minutes: 300, popular: true },
-  { id: "box-braids", category: "hair", name: "Box Braids", description: "Classic box braids in your choice of length and size.", price: 550, priceFrom: true, minutes: 240 },
-  { id: "wig-install", category: "hair", name: "Wig Install & Styling", description: "Frontal or closure install with plucking, bleaching and styling.", price: 450, minutes: 120, popular: true },
-  { id: "silk-press", category: "hair", name: "Silk Press", description: "Wash, deep condition and a sleek, bouncy silk press on natural hair.", price: 380, minutes: 120 },
-  { id: "wash-blowdry", category: "hair", name: "Wash & Blow-dry", description: "Cleanse, condition and a smooth blow-dry finish.", price: 250, minutes: 60 },
-  { id: "hair-treatment", category: "hair", name: "Treatment & Steam", description: "Restorative protein or moisture treatment with steam.", price: 300, minutes: 60 },
-  // Nails
-  { id: "gel-overlay", category: "nails", name: "Gel Overlay", description: "Strengthening gel on natural nails, any colour.", price: 250, minutes: 60, popular: true },
-  { id: "acrylic-set", category: "nails", name: "Acrylic Full Set", description: "Sculpted acrylic extensions in your chosen shape and length.", price: 380, minutes: 90 },
-  { id: "gel-pedicure", category: "nails", name: "Gel Pedicure", description: "Soak, scrub, cuticle care, massage and long-lasting gel colour.", price: 300, minutes: 75 },
-  { id: "classic-manicure", category: "nails", name: "Classic Manicure", description: "Shape, cuticle care, hand massage and polish.", price: 180, minutes: 45 },
-  { id: "nail-art", category: "nails", name: "Nail Art", description: "Chrome, French, ombré, gems and hand-painted designs.", price: 30, priceFrom: true, minutes: 30 },
-  // Makeup
-  { id: "everyday-glam", category: "makeup", name: "Everyday Glam", description: "Soft, polished makeup for work, dinner or photos.", price: 450, minutes: 60 },
-  { id: "occasion-makeup", category: "makeup", name: "Special Occasion Makeup", description: "Full glam with lashes for matric dance, parties and events.", price: 650, minutes: 75, popular: true },
-  { id: "bridal-makeup", category: "makeup", name: "Bridal Makeup (incl. trial)", description: "Trial session plus long-wear bridal makeup on your big day.", price: 1800, minutes: 120 },
-  // Skin, brows & lashes
-  { id: "signature-facial", category: "skin", name: "Signature Glow Facial", description: "Deep cleanse, exfoliation, mask and hydrating serum for radiant skin.", price: 550, minutes: 60, popular: true },
-  { id: "brow-shape-tint", category: "skin", name: "Brow Shape & Tint", description: "Wax or thread shaping with a custom tint.", price: 150, minutes: 30 },
-  { id: "classic-lashes", category: "skin", name: "Classic Lash Extensions", description: "One extension per natural lash for a natural, defined look.", price: 450, minutes: 90 },
-  { id: "volume-lashes", category: "skin", name: "Volume Lash Extensions", description: "Fluffy, full lashes using handmade fans.", price: 600, minutes: 120 },
-  { id: "lash-lift", category: "skin", name: "Lash Lift & Tint", description: "Lifts and darkens your natural lashes for up to 8 weeks.", price: 350, minutes: 60 },
+export type AdultStyle = { id: string; name: string; description: string; image: string };
+
+// No adult price list yet: quoted per style on WhatsApp.
+export const ADULT_STYLES: AdultStyle[] = [
+  { id: "adults-cornrows", name: "Cornrow Styles", description: "Straight-back, side-swept and patterned cornrows, with or without extensions.", image: "/images/work/32.jpg" },
+  { id: "adults-ponytails", name: "Braided Ponytails & Updos", description: "Sleek cornrow ponytails and buns with long braids or curly ends.", image: "/images/work/16.jpg" },
+  { id: "adults-braids", name: "Braids", description: "Knotless and box braids, including colour and boho curly ends.", image: "/images/work/7.jpg" },
 ];
 
-export type Stylist = {
-  id: string;
-  name: string;
-  role: string;
-  bio: string;
-  categories: CategoryId[];
-};
-
-// Fictional team for the demo.
-export const TEAM: Stylist[] = [
-  { id: "naledi", name: "Naledi M.", role: "Founder & Creative Director", bio: "Twelve years of hair artistry, from silk presses to editorial styling.", categories: ["hair"] },
-  { id: "thandiwe", name: "Thandiwe K.", role: "Senior Braider", bio: "Known for flawless knotless braids and gentle, tension-free installs.", categories: ["hair"] },
-  { id: "lerato", name: "Lerato S.", role: "Nail Artist", bio: "Gel, acrylic and hand-painted nail art with an eye for detail.", categories: ["nails"] },
-  { id: "zanele", name: "Zanele D.", role: "Makeup & Lash Artist", bio: "Bridal and occasion glam that lasts from first look to last dance.", categories: ["makeup", "skin"] },
-  { id: "ayanda", name: "Ayanda P.", role: "Skin Therapist", bio: "Qualified therapist specialising in facials and skin health.", categories: ["skin"] },
+// The owner's terms and conditions from her price list.
+export const TERMS = [
+  "Strictly by appointment — no walk-ins.",
+  "A booking is only confirmed once payment is received.",
+  "Cash in hand is not accepted.",
+  "Prices can be negotiable, depending on how big the blocks are.",
+  "A complimentary wash is offered.",
 ];
 
-export const formatPrice = (s: Pick<Service, "price" | "priceFrom">) =>
-  `${s.priceFrom ? "from " : ""}R${s.price.toLocaleString("en-ZA")}`;
+export type Photo = { src: string; alt: string; style: "Cornrows & Patterns" | "Ponytails & Buns" | "Braids & Beads" };
 
-export const formatDuration = (minutes: number) => {
-  const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
-  return [h ? `${h}h` : "", m ? `${m}min` : ""].filter(Boolean).join(" ");
-};
+export const PHOTOS: Photo[] = [
+  { src: "/images/work/14.jpg", alt: "Child with a flower cornrow design", style: "Cornrows & Patterns" },
+  { src: "/images/work/35.jpg", alt: "Child's braids finished with pink beads", style: "Braids & Beads" },
+  { src: "/images/work/12.jpg", alt: "Child's cornrows swept into a bun", style: "Ponytails & Buns" },
+  { src: "/images/work/34.jpg", alt: "Two cornrow ponytails with curly ends", style: "Braids & Beads" },
+  { src: "/images/work/16.jpg", alt: "Cornrow ponytail with long curly braids", style: "Ponytails & Buns" },
+  { src: "/images/work/33.jpg", alt: "Wavy side cornrows", style: "Cornrows & Patterns" },
+  { src: "/images/work/13.jpg", alt: "Child's braided ponytail with curls", style: "Braids & Beads" },
+  { src: "/images/work/32.jpg", alt: "Spiral cornrow design", style: "Cornrows & Patterns" },
+  { src: "/images/work/7.jpg", alt: "Long knotless braids with copper curly ends", style: "Braids & Beads" },
+  { src: "/images/work/3.jpg", alt: "Child's cornrows into a top bun", style: "Ponytails & Buns" },
+  { src: "/images/work/11.jpg", alt: "Zigzag cornrow pattern", style: "Cornrows & Patterns" },
+  { src: "/images/work/37.jpg", alt: "Child's swirl cornrows into a curly ponytail", style: "Ponytails & Buns" },
+  { src: "/images/work/20.jpg", alt: "Cornrows with rosette buns", style: "Cornrows & Patterns" },
+  { src: "/images/work/19.jpg", alt: "High ponytail with curly braids", style: "Ponytails & Buns" },
+  { src: "/images/work/8.jpg", alt: "Side-swept cornrows with ombré ends", style: "Braids & Beads" },
+  { src: "/images/work/18.jpg", alt: "Child's curved cornrows", style: "Cornrows & Patterns" },
+  { src: "/images/work/30.jpg", alt: "Cornrow updo with long braids", style: "Ponytails & Buns" },
+  { src: "/images/work/9.jpg", alt: "Curved cornrows", style: "Cornrows & Patterns" },
+  { src: "/images/work/4.jpg", alt: "Child's cornrows into a side bun", style: "Ponytails & Buns" },
+  { src: "/images/work/21.jpg", alt: "Wavy cornrows with curly back", style: "Cornrows & Patterns" },
+  { src: "/images/work/10.jpg", alt: "Cornrow ponytail", style: "Ponytails & Buns" },
+  { src: "/images/work/29.jpg", alt: "Swirl cornrows with a loop detail", style: "Cornrows & Patterns" },
+  { src: "/images/work/17.jpg", alt: "Back view of a cornrow design", style: "Cornrows & Patterns" },
+  { src: "/images/work/31.jpg", alt: "Swirl cornrows into a ponytail", style: "Ponytails & Buns" },
+];
