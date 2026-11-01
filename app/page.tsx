@@ -1,8 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/components/Logo";
-import WhatsAppIcon from "@/components/WhatsAppIcon";
-import { HOURS, PHOTOS, PRICE_LISTS, PROFILE, SALON, bookPhotoHref, fromPrice, whatsappLink } from "@/lib/salon";
+import { HOURS, PHOTOS, PRICE_LISTS, PROFILE, SALON, bookPhotoHref, fromPrice } from "@/lib/salon";
 
 // Styles with a photo make the home page cards; hair care and unplaiting stay on the price list.
 const KIDS_CARDS = PRICE_LISTS.kids.filter((s) => s.image);
@@ -30,9 +29,10 @@ export default function Home() {
             </p>
             <p className="font-script mt-3 text-3xl text-pink-dark">…and for adults too!</p>
             <div className="mt-8 flex flex-wrap justify-center gap-3 lg:justify-start">
-              <a href={whatsappLink("Hi BeeLeeGeen! I'd like to book a hairstyle.")} target="_blank" rel="noopener noreferrer" className="btn-primary">
-                <WhatsAppIcon /> Book on WhatsApp
-              </a>
+              {/* The booking form collects the details the owner needs (child, style, price, date). */}
+              <Link href="/booking" className="btn-primary">
+                Book Now
+              </Link>
               <Link href="/gallery" className="btn-secondary">
                 See our work
               </Link>

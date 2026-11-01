@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import WhatsAppIcon from "@/components/WhatsAppIcon";
 import { SocialLinks } from "@/components/SocialLinks";
@@ -9,7 +10,12 @@ export const metadata: Metadata = { title: "Contact Us" };
 export default function ContactPage() {
   return (
     <>
-      <PageHero eyebrow="Get in touch" title="Contact Us" intro="Walk-ins are welcome — or WhatsApp or call us to book your spot." />
+      <PageHero eyebrow="Get in touch" title="Contact Us" intro="Walk-ins are welcome. Questions? WhatsApp or call us — and to book, use our booking form." />
+      <div className="-mt-6 text-center">
+        <Link href="/booking" className="btn-primary">
+          Book an appointment
+        </Link>
+      </div>
 
       <section className="mx-auto grid max-w-6xl gap-6 px-5 py-14 md:grid-cols-2 lg:px-10 lg:py-20">
         {SALON.phones.map((p) => (
@@ -18,7 +24,7 @@ export default function ContactPage() {
             <p className="font-display mt-2 text-4xl font-semibold text-purple">{p.display}</p>
             <div className="mt-6 flex flex-wrap gap-3">
               <a
-                href={whatsappLink("Hi BeeLeeGeen! I'd like to book a hairstyle.", p.intl)}
+                href={whatsappLink("Hi BeeLeeGeen! I have a question:", p.intl)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full bg-[#1f8f4e] px-6 py-3 font-extrabold text-white transition-transform hover:-translate-y-0.5"
