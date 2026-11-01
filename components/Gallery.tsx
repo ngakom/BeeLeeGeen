@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
-import { PHOTOS } from "@/lib/salon";
+import { PHOTOS, bookPhotoHref } from "@/lib/salon";
 
 const TAGS = ["All", ...Array.from(new Set(PHOTOS.map((p) => p.style)))];
 
@@ -29,7 +30,12 @@ export default function Gallery() {
       </div>
       <div className="mt-10 columns-2 gap-4 lg:columns-3">
         {shown.map((p) => (
-          <figure key={p.src} className="group relative mb-4 break-inside-avoid overflow-hidden rounded-3xl">
+          <Link
+            key={p.src}
+            href={bookPhotoHref(p)}
+            aria-label={`Book this style: ${p.alt}`}
+            className="group relative mb-4 block break-inside-avoid overflow-hidden rounded-3xl"
+          >
             <Image
               src={p.src}
               alt={p.alt}
@@ -38,7 +44,10 @@ export default function Gallery() {
               sizes="(min-width: 1024px) 30vw, 45vw"
               className="h-auto w-full transition-transform duration-700 group-hover:scale-105"
             />
-          </figure>
+            <span className="absolute inset-x-3 bottom-3 rounded-full bg-white/95 py-2 text-center text-sm font-extrabold text-purple shadow transition-colors group-hover:bg-pink group-hover:text-white">
+              Book this style 👑
+            </span>
+          </Link>
         ))}
       </div>
     </>

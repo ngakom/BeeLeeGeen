@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import WhatsAppIcon from "@/components/WhatsAppIcon";
-import { KIDS_STYLES, PHOTOS, PROFILE, SALON, fromPrice, whatsappLink } from "@/lib/salon";
+import { KIDS_STYLES, PHOTOS, PROFILE, SALON, bookPhotoHref, fromPrice, whatsappLink } from "@/lib/salon";
 
 const WHY = [
   { emoji: "👑", title: "Child-friendly", text: "Patient, gentle hands and a fun, welcoming space so little ones feel like royalty." },
@@ -136,9 +136,17 @@ export default function Home() {
           </div>
           <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
             {PHOTOS.slice(4, 12).map((p) => (
-              <div key={p.src} className="relative aspect-square overflow-hidden rounded-3xl">
-                <Image src={p.src} alt={p.alt} fill sizes="(min-width: 768px) 22vw, 45vw" className="object-cover" />
-              </div>
+              <Link
+                key={p.src}
+                href={bookPhotoHref(p)}
+                aria-label={`Book this style: ${p.alt}`}
+                className="group relative aspect-square overflow-hidden rounded-3xl"
+              >
+                <Image src={p.src} alt={p.alt} fill sizes="(min-width: 768px) 22vw, 45vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                <span className="absolute inset-x-2 bottom-2 rounded-full bg-white/95 py-1.5 text-center text-xs font-extrabold text-purple shadow transition-colors group-hover:bg-pink group-hover:text-white sm:text-sm">
+                  Book this style
+                </span>
+              </Link>
             ))}
           </div>
           <div className="mt-10 text-center">

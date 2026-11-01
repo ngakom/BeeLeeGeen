@@ -1,12 +1,15 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import WhatsAppIcon from "./WhatsAppIcon";
-import { ADULT_STYLES, KIDS_STYLES, SALON, whatsappLink } from "@/lib/salon";
+import { ADULT_STYLES, KIDS_STYLES, SALON, findPhoto, whatsappLink } from "@/lib/salon";
 
 const TIMES = ["Morning (08:00–12:00)", "Midday (12:00–14:00)", "Afternoon (14:00–17:00)"];
 const OTHER = "Something else — I'll send a picture";
+const SAME_AS_PHOTO = "Same as the photo I chose";
 
 const kidsOption = (name: string, o: { label: string; price: number }) => `${name} – ${o.label} (R${o.price})`;
 
@@ -16,10 +19,17 @@ export default function BookingRequest() {
   const styleId = params.get("style");
   const kidsPick = KIDS_STYLES.find((s) => s.id === styleId);
   const adultPick = ADULT_STYLES.find((s) => s.id === styleId);
+  const photo = findPhoto(params.get("photo"));
   const [forWho, setForWho] = useState<"child" | "adult">(adultPick ? "adult" : "child");
   const [sent, setSent] = useState(false);
 
-  const defaultStyle = forWho === "child" ? (kidsPick ? kidsOption(kidsPick.name, kidsPick.options[0]) : "") : (adultPick?.name ?? "");
+  const defaultStyle = photo
+    ? SAME_AS_PHOTO
+    : forWho === "child"
+      ? kidsPick
+        ? kidsOption(kidsPick.name, kidsPick.options[0])
+        : ""
+      : (adultPick?.name ?? "");
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -33,6 +43,8 @@ export default function BookingRequest() {
       "",
       forWho === "child" ? `For: my child ${get("childName")}${get("childAge") ? ` (age ${get("childAge")})` : ""}` : "For: myself (adult)",
       `Style: ${get("style")}`,
+      // Full link so WhatsApp shows the salon a preview of the exact photo.
+      photo ? `Style photo: ${window.location.origin}${photo.src}` : null,
       date ? `Preferred date: ${date}` : null,
       `Preferred time: ${get("time")}`,
       get("notes") ? `Notes: ${get("notes")}` : null,
@@ -55,7 +67,7 @@ export default function BookingRequest() {
           WhatsApp has opened with your booking request. Tap <strong>send</strong> and we&apos;ll reply with your time and payment
           details. Your booking is confirmed once payment is received.
         </p>
-        <p className="mt-4 text-sm text-plum-soft">Tip: attach a picture of the style you&apos;d like.</p>
+        {!photo && <p className="mt-4 text-sm text-plum-soft">Tip: attach a picture of the style you&apos;d like.</p>}
         <button type="button" onClick={() => setSent(false)} className="btn-secondary mt-8">
           Make another request
         </button>
@@ -65,6 +77,21 @@ export default function BookingRequest() {
 
   return (
     <form onSubmit={handleSubmit} className="card mx-auto grid max-w-3xl gap-5 p-6 sm:grid-cols-2 sm:p-10">
+      {photo && (
+        <div className="flex items-center gap-4 rounded-2xl bg-blush p-3 sm:col-span-2">
+          <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl">
+            <Image src={photo.src} alt={photo.alt} fill sizes="6rem" className="object-cover" />
+          </div>
+          <div>
+            <p className="font-display text-lg font-semibold text-purple">Your chosen style</p>
+            <p className="text-sm text-plum-soft">{photo.alt}</p>
+            <Link href="/gallery" className="mt-1 inline-block text-sm font-extrabold text-pink-dark underline-offset-4 hover:underline">
+              Choose a different photo
+            </Link>
+          </div>
+        </div>
+      )}
+
       <fieldset className="sm:col-span-2">
         <legend className="font-display text-xl font-semibold text-purple">Who is the appointment for?</legend>
         <div className="mt-3 grid grid-cols-2 gap-3">
@@ -109,6 +136,7 @@ export default function BookingRequest() {
           <option value="" disabled>
             Choose a style…
           </option>
+          {photo && <option>{SAME_AS_PHOTO}</option>}
           {forWho === "child"
             ? KIDS_STYLES.map((s) => (
                 <optgroup key={s.id} label={s.name}>

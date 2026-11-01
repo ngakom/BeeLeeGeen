@@ -106,6 +106,11 @@ export const TERMS = [
 
 export type Photo = { src: string; alt: string; style: "Cornrows & Patterns" | "Ponytails & Buns" | "Braids & Beads" };
 
+/** Short id for a gallery photo, used in "book this style" links (e.g. /booking?photo=14). */
+export const photoId = (p: Photo) => p.src.split("/").pop()!.replace(".jpg", "");
+export const findPhoto = (id: string | null) => PHOTOS.find((p) => photoId(p) === id);
+export const bookPhotoHref = (p: Photo) => `/booking?photo=${photoId(p)}`;
+
 export const PHOTOS: Photo[] = [
   { src: "/images/work/14.jpg", alt: "Child with a flower cornrow design", style: "Cornrows & Patterns" },
   { src: "/images/work/35.jpg", alt: "Child's braids finished with pink beads", style: "Braids & Beads" },

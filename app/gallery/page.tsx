@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: "Gallery" };
 export default function GalleryPage() {
   return (
     <>
-      <PageHero eyebrow="Portfolio" title="Our Work" intro="Plaits, cornrows and braids by BeeLeeGeen — for little royals and grown-ups alike." />
+      <PageHero eyebrow="Portfolio" title="Our Work" intro="Plaits, cornrows and braids by BeeLeeGeen. See a style you love? Tap the photo to book it." />
       <section className="mx-auto max-w-7xl px-5 py-14 lg:px-10 lg:py-20">
         <Gallery />
         <div className="mt-16 text-center">
