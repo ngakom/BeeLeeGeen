@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: "%s | BeeLeeGeen Kiddies Hair Salon",
   },
   description:
-    "BeeLeeGeen is a child-friendly kiddies hair salon in Mmotong, Lefisoane offering plaiting, cornrows, braids and hair care for children — and luxury styling for adults too. Book on WhatsApp: 063 379 7842.",
+    "BeeLeeGeen is a child-friendly kiddies hair salon in Mmotong, Lefisoane offering plaiting, cornrows, braids and hair care for children — and luxury styling for adults too. Walk in or book online — 063 379 7842.",
   openGraph: {
     type: "website",
     siteName: "BeeLeeGeen Kiddies Hair Salon",
