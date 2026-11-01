@@ -13,6 +13,10 @@ const SAME_AS_PHOTO = "Same as the photo I chose";
 
 const kidsOption = (name: string, o: { label: string; price: number }) => `${name} – ${o.label} (R${o.price})`;
 
+/** Example photo for a style picked from the list (kids options are "Name – Option (Rxx)"). */
+const exampleFor = (style: string) =>
+  KIDS_STYLES.find((s) => style.startsWith(`${s.name} – `)) ?? ADULT_STYLES.find((s) => s.name === style);
+
 // Builds a WhatsApp message to the salon. The owner confirms the time and payment in the chat.
 export default function BookingRequest() {
   const params = useSearchParams();
@@ -23,13 +27,21 @@ export default function BookingRequest() {
   const [forWho, setForWho] = useState<"child" | "adult">(adultPick ? "adult" : "child");
   const [sent, setSent] = useState(false);
 
-  const defaultStyle = photo
-    ? SAME_AS_PHOTO
-    : forWho === "child"
-      ? kidsPick
-        ? kidsOption(kidsPick.name, kidsPick.options[0])
-        : ""
-      : (adultPick?.name ?? "");
+  const defaultStyle = (who: "child" | "adult") =>
+    photo
+      ? SAME_AS_PHOTO
+      : who === "child"
+        ? kidsPick
+          ? kidsOption(kidsPick.name, kidsPick.options[0])
+          : ""
+        : (adultPick?.name ?? "");
+  const [style, setStyle] = useState(() => defaultStyle(forWho));
+  const example = exampleFor(style);
+
+  function chooseFor(who: "child" | "adult") {
+    setForWho(who);
+    setStyle(defaultStyle(who));
+  }
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -46,6 +58,7 @@ export default function BookingRequest() {
       `Style: ${get("style")}`,
       // Full link so WhatsApp shows the salon a preview of the exact photo.
       photo ? `Style photo: ${window.location.origin}${photo.src}` : null,
+      example && d.get("includeExample") ? `Example photo: ${window.location.origin}${example.image}` : null,
       date ? `Preferred date: ${date}` : null,
       `Preferred time: ${get("time")}`,
       get("notes") ? `Notes: ${get("notes")}` : null,
@@ -105,7 +118,7 @@ export default function BookingRequest() {
             <button
               key={value}
               type="button"
-              onClick={() => setForWho(value)}
+              onClick={() => chooseFor(value)}
               aria-pressed={forWho === value}
               className={`rounded-2xl border-2 py-4 text-lg font-bold transition-colors ${
                 forWho === value ? "border-pink bg-blush text-pink-dark" : "border-hairline text-plum hover:border-pink/50"
@@ -132,8 +145,7 @@ export default function BookingRequest() {
 
       <label className="font-bold text-plum sm:col-span-2">
         Style
-        {/* key resets the default when switching between child and adult */}
-        <select key={forWho} name="style" required defaultValue={defaultStyle} className="field mt-1.5">
+        <select name="style" required value={style} onChange={(e) => setStyle(e.target.value)} className="field mt-1.5">
           <option value="" disabled>
             Choose a style…
           </option>
@@ -150,6 +162,20 @@ export default function BookingRequest() {
           <option>{OTHER}</option>
         </select>
       </label>
+
+      {example && (
+        // Optional: the client can untick it and book without a photo.
+        <label className="flex cursor-pointer items-center gap-4 rounded-2xl border-2 border-dashed border-pink/40 p-3 sm:col-span-2">
+          <input name="includeExample" type="checkbox" defaultChecked className="h-5 w-5 shrink-0 accent-pink-dark" />
+          <span className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl">
+            <Image src={example.image} alt={`Example of ${example.name}`} fill sizes="4rem" className="object-cover" />
+          </span>
+          <span className="text-sm text-plum">
+            <strong>Include this example photo in my message</strong>
+            <span className="block text-plum-soft">Optional — it shows the salon what {example.name.toLowerCase()} looks like.</span>
+          </span>
+        </label>
+      )}
 
       <label className="font-bold text-plum">
         Preferred date
