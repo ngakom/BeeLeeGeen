@@ -13,10 +13,10 @@ export default function AboutPage() {
 
       <section className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-16 lg:grid-cols-[0.8fr_1fr] lg:px-10 lg:py-20">
         <div className="relative mx-auto aspect-[3/4] w-full max-w-sm overflow-hidden rounded-[2.5rem] border-4 border-white shadow-xl">
-          <Image src="/images/owner.jpg" alt="The founder of BeeLeeGeen" fill sizes="(min-width: 1024px) 24rem, 90vw" className="object-cover" />
+          <Image src="/images/owner.jpg" alt={`${SALON.owner}, founder of BeeLeeGeen`} fill sizes="(min-width: 1024px) 24rem, 90vw" className="object-cover" />
         </div>
         <div>
-          <p className="eyebrow">Meet the founder</p>
+          <p className="eyebrow">Meet the founder, {SALON.owner}</p>
           <h2 className="font-display mt-3 text-4xl font-semibold text-purple sm:text-5xl">A kiddies salon with a royal touch</h2>
           <p className="mt-6 text-lg leading-relaxed text-plum-soft">{PROFILE.overview}</p>
           <p className="mt-4 text-lg leading-relaxed text-plum-soft">

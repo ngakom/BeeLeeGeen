@@ -5,40 +5,34 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import WhatsAppIcon from "./WhatsAppIcon";
-import { ADULT_STYLES, KIDS_STYLES, SALON, findPhoto, whatsappLink } from "@/lib/salon";
+import { PRICE_LISTS, SALON, audienceOf, findPhoto, optionLabel, whatsappLink, type Audience } from "@/lib/salon";
 
-const TIMES = ["Morning (08:00–12:00)", "Midday (12:00–14:00)", "Afternoon (14:00–17:00)"];
+const TIMES = ["Morning", "Midday", "Afternoon"];
 const OTHER = "Something else — I'll send a picture";
 const SAME_AS_PHOTO = "Same as the photo I chose";
 
-const kidsOption = (name: string, o: { label: string; price: number }) => `${name} – ${o.label} (R${o.price})`;
+type Who = "child" | "adult";
+const listFor = (who: Who): Audience => (who === "child" ? "kids" : "adults");
 
-/** Example photo for a style picked from the list (kids options are "Name – Option (Rxx)"). */
-const exampleFor = (style: string) =>
-  KIDS_STYLES.find((s) => style.startsWith(`${s.name} – `)) ?? ADULT_STYLES.find((s) => s.name === style);
+/** The style (with a photo) behind a chosen dropdown option, for the optional example photo. */
+const exampleFor = (who: Who, choice: string) =>
+  PRICE_LISTS[listFor(who)].find((s) => s.image && s.options.some((o) => optionLabel(s, o) === choice));
 
 // Builds a WhatsApp message to the salon. The owner confirms the time and payment in the chat.
 export default function BookingRequest() {
   const params = useSearchParams();
-  const styleId = params.get("style");
-  const kidsPick = KIDS_STYLES.find((s) => s.id === styleId);
-  const adultPick = ADULT_STYLES.find((s) => s.id === styleId);
+  const styleId = params.get("style") ?? "";
+  const picked = PRICE_LISTS.kids.find((s) => s.id === styleId) ?? PRICE_LISTS.adults.find((s) => s.id === styleId);
   const photo = findPhoto(params.get("photo"));
-  const [forWho, setForWho] = useState<"child" | "adult">(adultPick ? "adult" : "child");
+  const [forWho, setForWho] = useState<Who>(audienceOf(styleId) === "adults" ? "adult" : "child");
   const [sent, setSent] = useState(false);
 
-  const defaultStyle = (who: "child" | "adult") =>
-    photo
-      ? SAME_AS_PHOTO
-      : who === "child"
-        ? kidsPick
-          ? kidsOption(kidsPick.name, kidsPick.options[0])
-          : ""
-        : (adultPick?.name ?? "");
+  const defaultStyle = (who: Who) =>
+    photo ? SAME_AS_PHOTO : picked && audienceOf(picked.id) === listFor(who) ? optionLabel(picked, picked.options[0]) : "";
   const [style, setStyle] = useState(() => defaultStyle(forWho));
-  const example = exampleFor(style);
+  const example = exampleFor(forWho, style);
 
-  function chooseFor(who: "child" | "adult") {
+  function chooseFor(who: Who) {
     setForWho(who);
     setStyle(defaultStyle(who));
   }
@@ -56,7 +50,7 @@ export default function BookingRequest() {
       "",
       forWho === "child" ? `For: my child ${get("childName")}${get("childAge") ? ` (age ${get("childAge")})` : ""}` : "For: myself (adult)",
       `Style: ${get("style")}`,
-      // Full link so WhatsApp shows the salon a preview of the exact photo.
+      // Full links so WhatsApp shows the salon a preview of the photo.
       photo ? `Style photo: ${window.location.origin}${photo.src}` : null,
       example && d.get("includeExample") ? `Example photo: ${window.location.origin}${example.image}` : null,
       date ? `Preferred date: ${date}` : null,
@@ -81,7 +75,7 @@ export default function BookingRequest() {
           WhatsApp has opened with your booking request. Tap <strong>send</strong> and we&apos;ll reply with your time and payment
           details. Your booking is confirmed once payment is received.
         </p>
-        {!photo && <p className="mt-4 text-sm text-plum-soft">Tip: attach a picture of the style you&apos;d like.</p>}
+        {!photo && !example && <p className="mt-4 text-sm text-plum-soft">Tip: attach a picture of the style you&apos;d like.</p>}
         <button type="button" onClick={() => setSent(false)} className="btn-secondary mt-8">
           Make another request
         </button>
@@ -150,15 +144,13 @@ export default function BookingRequest() {
             Choose a style…
           </option>
           {photo && <option>{SAME_AS_PHOTO}</option>}
-          {forWho === "child"
-            ? KIDS_STYLES.map((s) => (
-                <optgroup key={s.id} label={s.name}>
-                  {s.options.map((o) => (
-                    <option key={o.label}>{kidsOption(s.name, o)}</option>
-                  ))}
-                </optgroup>
-              ))
-            : ADULT_STYLES.map((s) => <option key={s.id}>{s.name}</option>)}
+          {PRICE_LISTS[listFor(forWho)].map((s) => (
+            <optgroup key={s.id} label={s.name}>
+              {s.options.map((o) => (
+                <option key={o.label}>{optionLabel(s, o)}</option>
+              ))}
+            </optgroup>
+          ))}
           <option>{OTHER}</option>
         </select>
       </label>
@@ -168,7 +160,7 @@ export default function BookingRequest() {
         <label className="flex cursor-pointer items-center gap-4 rounded-2xl border-2 border-dashed border-pink/40 p-3 sm:col-span-2">
           <input name="includeExample" type="checkbox" defaultChecked className="h-5 w-5 shrink-0 accent-pink-dark" />
           <span className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl">
-            <Image src={example.image} alt={`Example of ${example.name}`} fill sizes="4rem" className="object-cover" />
+            <Image src={example.image!} alt={`Example of ${example.name}`} fill sizes="4rem" className="object-cover" />
           </span>
           <span className="text-sm text-plum">
             <strong>Include this example photo in my message</strong>
@@ -208,8 +200,8 @@ export default function BookingRequest() {
         <WhatsAppIcon /> Send booking request on WhatsApp
       </button>
       <div className="rounded-2xl bg-blush p-4 text-sm leading-relaxed text-plum sm:col-span-2">
-        <strong>Please note:</strong> we work strictly by appointment (no walk-ins). Your booking is confirmed once payment is received —
-        we&apos;ll send you the payment details on WhatsApp. Cash in hand is not accepted.
+        <strong>Please note:</strong> walk-ins are welcome, but booking secures your spot. Your booking is confirmed once payment is
+        received — we&apos;ll send you the payment details on WhatsApp. Cash in hand is not accepted.
       </div>
     </form>
   );

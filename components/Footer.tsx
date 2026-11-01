@@ -2,7 +2,7 @@ import Link from "next/link";
 import Logo from "./Logo";
 import { SocialLinks } from "./SocialLinks";
 import { NAV } from "@/lib/nav";
-import { SALON, telLink } from "@/lib/salon";
+import { HOURS, SALON, telLink } from "@/lib/salon";
 
 export default function Footer() {
   return (
@@ -39,7 +39,13 @@ export default function Footer() {
               </li>
             ))}
           </ul>
-          <p className="mt-4 text-sm">Appointments only — WhatsApp us to book.</p>
+          <ul className="mt-5 space-y-1 text-sm">
+            {HOURS.map((h) => (
+              <li key={h.days}>
+                {h.days}: <span className="text-white">{h.time}</span>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div>

@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import WhatsAppIcon from "@/components/WhatsAppIcon";
 import { SocialLinks } from "@/components/SocialLinks";
-import { SALON, telLink, whatsappLink } from "@/lib/salon";
+import { HOURS, SALON, telLink, whatsappLink } from "@/lib/salon";
 
 export const metadata: Metadata = { title: "Contact Us" };
 
 export default function ContactPage() {
   return (
     <>
-      <PageHero eyebrow="Get in touch" title="Contact Us" intro="We work by appointment — WhatsApp or call us to book your spot." />
+      <PageHero eyebrow="Get in touch" title="Contact Us" intro="Walk-ins are welcome — or WhatsApp or call us to book your spot." />
 
       <section className="mx-auto grid max-w-6xl gap-6 px-5 py-14 md:grid-cols-2 lg:px-10 lg:py-20">
         {SALON.phones.map((p) => (
@@ -35,7 +35,14 @@ export default function ContactPage() {
         <div className="card p-8">
           <p className="eyebrow">Visit us</p>
           <p className="font-display mt-2 text-2xl font-semibold text-purple">{SALON.address}</p>
-          <p className="mt-4 text-plum-soft">Open by appointment. Please book ahead so we can give your little royal our full attention.</p>
+          <ul className="mt-4 space-y-1.5">
+            {HOURS.map((h) => (
+              <li key={h.days} className="flex justify-between gap-4">
+                <span className="text-plum">{h.days}</span>
+                <span className="font-bold text-pink-dark">{h.time}</span>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className="card p-8">

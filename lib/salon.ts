@@ -4,6 +4,7 @@ export const SALON = {
   name: "BeeLeeGeen",
   shortName: "BLG",
   kind: "Kiddies Hair Salon",
+  owner: "Mmamphofe",
   tagline: "Luxury Styling for Little Royals",
   adultsLine: "Luxury styling for adults too!",
   motto: "Your beauty is worthy of our time",
@@ -17,6 +18,12 @@ export const SALON = {
   facebook: { handle: "Beeleegeen Mmamphofe", url: "https://www.facebook.com/share/19v1oeELGp/" },
   tiktok: { handle: "BLG Beeleegeen", url: "https://www.tiktok.com/@blgb3el3eg3en" },
 };
+
+export const HOURS = [
+  { days: "Monday – Friday", time: "09:00 – 18:00" },
+  { days: "Saturday", time: "08:00 – 18:00" },
+  { days: "Sunday", time: "07:00 – 13:00" },
+];
 
 /** WhatsApp chat with the salon's main number, with the message ready to send. */
 export function whatsappLink(message: string, intl = SALON.phones[0].intl) {
@@ -34,74 +41,149 @@ export const PROFILE = {
   goals: ["Customer satisfaction", "Growth", "Excellent service"],
 };
 
-export type PriceOption = { label: string; price: number };
+/** A price of null means the owner quotes it on request. */
+export type PriceOption = { label: string; price: number | null };
 
-export type KidsStyle = { id: string; name: string; description: string; image: string; options: PriceOption[] };
+export type Style = { id: string; name: string; description?: string; image?: string; options: PriceOption[] };
 
-// The owner's kids price list (rand).
-export const KIDS_STYLES: KidsStyle[] = [
-  {
-    id: "knotless-braids",
-    name: "Knotless Braids",
-    description: "Light, neat knotless braids that are gentle on little heads.",
-    image: "/images/work/34.jpg",
-    options: [{ label: "Short", price: 250 }, { label: "Long", price: 300 }],
-  },
-  {
-    id: "straight-back",
-    name: "Straight Back",
-    description: "Classic cornrows plaited neatly straight back.",
-    image: "/images/work/18.jpg",
-    options: [{ label: "Short", price: 150 }, { label: "Long", price: 180 }],
-  },
-  {
-    id: "straight-up",
-    name: "Straight Up",
-    description: "Cornrows swept up into a ponytail or bun — perfect for school.",
-    image: "/images/work/12.jpg",
-    options: [{ label: "Short", price: 180 }, { label: "Long", price: 200 }],
-  },
-  {
-    id: "tribal-braids",
-    name: "Tribal Braids",
-    description: "Cornrows paired with braids for a bold, beautiful look.",
-    image: "/images/work/13.jpg",
-    options: [{ label: "Short", price: 200 }, { label: "Long", price: 250 }],
-  },
-  {
-    id: "free-hand",
-    name: "Free-Hand",
-    description: "Creative freehand cornrow designs — lines, fishbones, pondos and funky patterns.",
-    image: "/images/work/14.jpg",
-    options: [
-      { label: "Straight line", price: 80 },
-      { label: "Funky design", price: 100 },
-      { label: "1 fishbone", price: 100 },
-      { label: "2 fishbone", price: 120 },
-      { label: "1 pondo", price: 100 },
-      { label: "2 pondo", price: 120 },
-    ],
-  },
-];
+export type Audience = "kids" | "adults";
 
-export const fromPrice = (s: KidsStyle) => Math.min(...s.options.map((o) => o.price));
+// The owner's price lists (rand). Kids from her "Kiddies Price List"; adults from her second list.
+export const PRICE_LISTS: Record<Audience, Style[]> = {
+  kids: [
+    {
+      id: "kids-knotless",
+      name: "Knotless Braids",
+      description: "Light, neat knotless braids that are gentle on little heads.",
+      image: "/images/work/34.jpg",
+      options: [{ label: "Short", price: 250 }, { label: "Long", price: 300 }],
+    },
+    {
+      id: "kids-straight-back",
+      name: "Straight Back",
+      description: "Classic cornrows plaited neatly straight back.",
+      image: "/images/work/18.jpg",
+      options: [{ label: "Short", price: 150 }, { label: "Long", price: 180 }],
+    },
+    {
+      id: "kids-straight-up",
+      name: "Straight Up",
+      description: "Cornrows swept up into a ponytail or bun — perfect for school.",
+      image: "/images/work/12.jpg",
+      options: [{ label: "Short", price: 180 }, { label: "Long", price: 200 }],
+    },
+    {
+      id: "kids-tribal",
+      name: "Tribal Braids",
+      description: "Cornrows paired with braids for a bold, beautiful look.",
+      image: "/images/work/13.jpg",
+      options: [{ label: "Short", price: 200 }, { label: "Long", price: 250 }],
+    },
+    {
+      id: "kids-free-hand",
+      name: "Free Hand",
+      description: "Creative freehand cornrow designs — lines, pondos and fishbones.",
+      image: "/images/work/14.jpg",
+      options: [
+        { label: "Straight lines", price: 80 },
+        { label: "Funky lines", price: 100 },
+        { label: "1 pondo", price: 100 },
+        { label: "1 fishbone", price: 100 },
+        { label: "2 pondos", price: 120 },
+        { label: "2 fishbone", price: 120 },
+      ],
+    },
+    {
+      id: "kids-hair-care",
+      name: "Hair Care",
+      description: "Keep growing hair clean, soft and healthy.",
+      options: [
+        { label: "Wash", price: 40 },
+        { label: "Blowout", price: 80 },
+        { label: "Just for Kids", price: 100 },
+        { label: "Treatment", price: 120 },
+      ],
+    },
+    { id: "kids-unplaiting", name: "Unplaiting", options: [{ label: "Unplaiting", price: 50 }] },
+  ],
+  adults: [
+    {
+      id: "adults-knotless",
+      name: "Knotless Braids",
+      description: "Knotless braids, including colour and boho curly ends.",
+      image: "/images/work/7.jpg",
+      options: [{ label: "Short", price: 300 }, { label: "Long", price: 400 }],
+    },
+    {
+      id: "adults-straight-back",
+      name: "Straight Back",
+      description: "Neat straight-back cornrows.",
+      image: "/images/work/9.jpg",
+      options: [{ label: "Short", price: 180 }, { label: "Long", price: 200 }],
+    },
+    {
+      id: "adults-straight-up",
+      name: "Straight Up",
+      description: "Sleek cornrows swept up into a ponytail or updo.",
+      image: "/images/work/16.jpg",
+      options: [{ label: "Short", price: 220 }, { label: "Long", price: 250 }],
+    },
+    {
+      id: "adults-tribal",
+      name: "Tribal Braids",
+      description: "Cornrows and braids together for a bold look.",
+      image: "/images/work/8.jpg",
+      options: [{ label: "Short", price: 250 }, { label: "Long", price: 350 }],
+    },
+    {
+      id: "adults-free-hand",
+      name: "Free Hand",
+      description: "Freehand cornrow designs — lines, pondos and fishbones.",
+      image: "/images/work/32.jpg",
+      options: [
+        { label: "Straight line", price: 80 },
+        { label: "Funky stylish", price: 100 },
+        { label: "1 pondo", price: 100 },
+        { label: "2 pondo", price: 120 },
+        { label: "1 fishbone", price: 100 },
+        { label: "2 fishbone", price: 120 },
+      ],
+    },
+    { id: "adults-ben-betty", name: "Ben & Betty", options: [{ label: "Normal", price: 50 }, { label: "Stylish", price: 100 }] },
+    {
+      id: "adults-hair-care",
+      name: "Hair Care",
+      options: [
+        { label: "Wash", price: 40 },
+        { label: "Relaxer", price: null },
+        { label: "Blow out", price: 80 },
+        { label: "Restore", price: 100 },
+        { label: "Treatment", price: 120 },
+      ],
+    },
+    { id: "adults-unplaiting", name: "Unplaiting", options: [{ label: "Unplaiting", price: 50 }] },
+  ],
+};
 
-export type AdultStyle = { id: string; name: string; description: string; image: string };
+export const ALL_STYLES = [...PRICE_LISTS.kids, ...PRICE_LISTS.adults];
+export const audienceOf = (id: string): Audience | undefined =>
+  PRICE_LISTS.kids.some((s) => s.id === id) ? "kids" : PRICE_LISTS.adults.some((s) => s.id === id) ? "adults" : undefined;
 
-// No adult price list yet: quoted per style on WhatsApp.
-export const ADULT_STYLES: AdultStyle[] = [
-  { id: "adults-cornrows", name: "Cornrow Styles", description: "Straight-back, side-swept and patterned cornrows, with or without extensions.", image: "/images/work/32.jpg" },
-  { id: "adults-ponytails", name: "Braided Ponytails & Updos", description: "Sleek cornrow ponytails and buns with long braids or curly ends.", image: "/images/work/16.jpg" },
-  { id: "adults-braids", name: "Braids", description: "Knotless and box braids, including colour and boho curly ends.", image: "/images/work/7.jpg" },
-];
+export const formatPrice = (price: number | null) => (price === null ? "Ask us" : `R${price}`);
+export const fromPrice = (s: Style) => Math.min(...s.options.flatMap((o) => (o.price === null ? [] : [o.price])));
 
-// The owner's terms and conditions from her price list.
+/** "Knotless Braids – Short (R250)", or "Unplaiting (R50)" for single-option items. */
+export const optionLabel = (s: Style, o: PriceOption) => {
+  const price = o.price === null ? "price on request" : `R${o.price}`;
+  return s.options.length === 1 ? `${s.name} (${price})` : `${s.name} – ${o.label} (${price})`;
+};
+
+// The owner's terms and conditions from her price lists.
 export const TERMS = [
-  "Strictly by appointment — no walk-ins.",
+  "Walk-ins are allowed.",
   "A booking is only confirmed once payment is received.",
   "Cash in hand is not accepted.",
   "Prices can be negotiable, depending on how big the blocks are.",
-  "A complimentary wash is offered.",
 ];
 
 export type Photo = { src: string; alt: string; style: "Cornrows & Patterns" | "Ponytails & Buns" | "Braids & Beads" };

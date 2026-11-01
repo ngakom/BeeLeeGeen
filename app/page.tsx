@@ -2,12 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import WhatsAppIcon from "@/components/WhatsAppIcon";
-import { KIDS_STYLES, PHOTOS, PROFILE, SALON, bookPhotoHref, fromPrice, whatsappLink } from "@/lib/salon";
+import { HOURS, PHOTOS, PRICE_LISTS, PROFILE, SALON, bookPhotoHref, fromPrice, whatsappLink } from "@/lib/salon";
+
+// Styles with a photo make the home page cards; hair care and unplaiting stay on the price list.
+const KIDS_CARDS = PRICE_LISTS.kids.filter((s) => s.image);
 
 const WHY = [
   { emoji: "👑", title: "Child-friendly", text: "Patient, gentle hands and a fun, welcoming space so little ones feel like royalty." },
   { emoji: "✨", title: "Quality styling", text: "Neat partings, clean cornrows and creative designs that last." },
-  { emoji: "💜", title: "Affordable", text: "Kids' styles from just R80, with a complimentary wash." },
+  { emoji: "💜", title: "Affordable", text: "Kids' free-hand styles from just R80 — and walk-ins are welcome." },
 ];
 
 export default function Home() {
@@ -63,10 +66,10 @@ export default function Home() {
           <h2 className="font-display mt-3 text-4xl font-semibold text-purple sm:text-5xl">Kiddies Styles</h2>
         </div>
         <div className="mt-12 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-5">
-          {KIDS_STYLES.map((s) => (
+          {KIDS_CARDS.map((s) => (
             <Link key={s.id} href={`/services#${s.id}`} className="card group overflow-hidden">
               <div className="relative aspect-square overflow-hidden">
-                <Image src={s.image} alt={s.name} fill sizes="(min-width: 1024px) 18vw, 45vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                <Image src={s.image!} alt={s.name} fill sizes="(min-width: 1024px) 18vw, 45vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
                 <span className="absolute right-3 top-3 rounded-full bg-white/95 px-3 py-1 text-sm font-extrabold text-pink-dark shadow">
                   from R{fromPrice(s)}
                 </span>
@@ -160,7 +163,15 @@ export default function Home() {
       {/* CTA */}
       <section className="mx-auto max-w-3xl px-5 py-20 text-center">
         <h2 className="font-display text-4xl font-semibold text-purple sm:text-5xl">Ready for a royal hairdo?</h2>
-        <p className="mt-4 text-lg text-plum-soft">Strictly by appointment — send us your booking request and we&apos;ll confirm your time.</p>
+        <p className="mt-4 text-lg text-plum-soft">Walk in, or book ahead to secure your spot — we&apos;re open 7 days a week.</p>
+        <ul className="mx-auto mt-6 grid max-w-md gap-2 text-left">
+          {HOURS.map((h) => (
+            <li key={h.days} className="flex justify-between rounded-full bg-lilac px-5 py-2.5 font-bold text-plum">
+              <span>{h.days}</span>
+              <span className="text-pink-dark">{h.time}</span>
+            </li>
+          ))}
+        </ul>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link href="/booking" className="btn-primary">
             Book an appointment
