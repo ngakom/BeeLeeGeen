@@ -14,9 +14,8 @@ export const SALON = {
     { display: "079 372 1697", intl: "27793721697" },
   ],
   instagram: { handle: "@beeleegeen", url: "https://www.instagram.com/beeleegeen/" },
-  // TODO: replace the search links with the exact profile URLs once the owner sends them.
-  facebook: { handle: "Beeleegeen Mmamphofe", url: "https://www.facebook.com/search/top?q=Beeleegeen%20Mmamphofe" },
-  tiktok: { handle: "BLG Beeleegeen", url: "https://www.tiktok.com/search?q=BLG%20Beeleegeen" },
+  facebook: { handle: "Beeleegeen Mmamphofe", url: "https://www.facebook.com/share/19v1oeELGp/" },
+  tiktok: { handle: "BLG Beeleegeen", url: "https://www.tiktok.com/@blgb3el3eg3en" },
 };
 
 /** WhatsApp chat with the salon's main number, with the message ready to send. */
