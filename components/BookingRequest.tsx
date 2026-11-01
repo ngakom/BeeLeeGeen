@@ -39,7 +39,8 @@ export default function BookingRequest() {
       ? new Date(`${get("date")}T00:00`).toLocaleDateString("en-ZA", { weekday: "long", day: "numeric", month: "long" })
       : "";
     const lines = [
-      `Hi ${SALON.name}! I'd like to book an appointment 👑`,
+      // No emoji: some WhatsApp versions garble them in pre-filled messages.
+      `Hi ${SALON.name}! I'd like to book an appointment.`,
       "",
       forWho === "child" ? `For: my child ${get("childName")}${get("childAge") ? ` (age ${get("childAge")})` : ""}` : "For: myself (adult)",
       `Style: ${get("style")}`,
