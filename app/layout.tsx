@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SALON.url),
   // Pages set their own canonical; this one is the home page.
   alternates: { canonical: "/" },
+  verification: { google: "NJ2wyQz5NjPIEAt1yCiBTaLtBEHugzY3-hihxp_wLuY" },
   title: {
     default: "BeeLeeGeen Kiddies Hair Salon | Luxury Styling for Little Royals",
     template: "%s | BeeLeeGeen Kiddies Hair Salon",
