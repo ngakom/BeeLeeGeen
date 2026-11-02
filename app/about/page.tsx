@@ -4,7 +4,7 @@ import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import { PROFILE, SALON } from "@/lib/salon";
 
-export const metadata: Metadata = { title: "About Us" };
+export const metadata: Metadata = { title: "About Us", alternates: { canonical: "/about" } };
 
 export default function AboutPage() {
   return (

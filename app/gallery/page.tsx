@@ -3,7 +3,7 @@ import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import Gallery from "@/components/Gallery";
 
-export const metadata: Metadata = { title: "Gallery" };
+export const metadata: Metadata = { title: "Gallery", alternates: { canonical: "/gallery" } };
 
 export default function GalleryPage() {
   return (

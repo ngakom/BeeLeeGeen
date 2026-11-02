@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import PageHero from "@/components/PageHero";
 import BookingRequest from "@/components/BookingRequest";
 
-export const metadata: Metadata = { title: "Book an Appointment" };
+export const metadata: Metadata = { title: "Book an Appointment", alternates: { canonical: "/booking" } };
 
 export default function BookingPage() {
   return (

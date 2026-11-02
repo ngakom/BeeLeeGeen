@@ -4,7 +4,7 @@ import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import { HOURS, PRICE_LISTS, TERMS, formatPrice, type Audience, type Style } from "@/lib/salon";
 
-export const metadata: Metadata = { title: "Services & Prices" };
+export const metadata: Metadata = { title: "Services & Prices", alternates: { canonical: "/services" } };
 
 const SECTIONS: { audience: Audience; heading: React.ReactNode; intro: string }[] = [
   {

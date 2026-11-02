@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import BusinessSchema from "@/components/BusinessSchema";
 import Logo from "@/components/Logo";
 import { HOURS, PHOTOS, PRICE_LISTS, PROFILE, SALON, bookPhotoHref, fromPrice } from "@/lib/salon";
 
@@ -15,6 +16,7 @@ const WHY = [
 export default function Home() {
   return (
     <>
+      <BusinessSchema />
       {/* Hero */}
       <section className="sparkles relative overflow-hidden bg-gradient-to-br from-lilac via-blush to-cream">
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-12 lg:grid-cols-2 lg:px-10 lg:py-16">

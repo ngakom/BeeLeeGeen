@@ -2,6 +2,7 @@
 
 export const SALON = {
   name: "BeeLeeGeen",
+  url: "https://www.beeleegeen.co.za",
   shortName: "BLG",
   kind: "Kiddies Hair Salon",
   owner: "Mmamphofe",

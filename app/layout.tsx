@@ -3,6 +3,7 @@ import { Dancing_Script, Fredoka, Nunito } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
+import { SALON } from "@/lib/salon";
 import "./globals.css";
 
 const fredoka = Fredoka({ variable: "--font-fredoka", subsets: ["latin"], weight: ["500", "600"] });
@@ -10,6 +11,9 @@ const nunito = Nunito({ variable: "--font-nunito", subsets: ["latin"], weight: [
 const dancing = Dancing_Script({ variable: "--font-dancing", subsets: ["latin"], weight: ["600"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SALON.url),
+  // Pages set their own canonical; this one is the home page.
+  alternates: { canonical: "/" },
   title: {
     default: "BeeLeeGeen Kiddies Hair Salon | Luxury Styling for Little Royals",
     template: "%s | BeeLeeGeen Kiddies Hair Salon",

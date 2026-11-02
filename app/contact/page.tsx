@@ -5,7 +5,7 @@ import WhatsAppIcon from "@/components/WhatsAppIcon";
 import { SocialLinks } from "@/components/SocialLinks";
 import { HOURS, SALON, telLink, whatsappLink } from "@/lib/salon";
 
-export const metadata: Metadata = { title: "Contact Us" };
+export const metadata: Metadata = { title: "Contact Us", alternates: { canonical: "/contact" } };
 
 export default function ContactPage() {
   return (
